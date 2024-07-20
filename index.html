@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #text {
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Fetch API</h1>
+    <p id="text"></p>
+    <!-- <img id="quote" src="" alt="" /> -->
+    <input id="input-file" type="file" accept="image/jpeg, image/png" />
+    <script>
+      const inputFile = document.getElementById("input-file");
+      const text = document.getElementById("text");
+      // const quoteImg = document.getElementById("quote");
+      inputFile.onchange = function () {
+        // console.log(URL.createObjectURL(inputFile.files[0]));
+        const imgURL = URL.createObjectURL(inputFile.files[0]);
+        console.log(imgURL);
+
+        const url = `https://ocr-extract-text.p.rapidapi.com/ocr?url=${imgURL}`;
+        const options = {
+          method: "GET",
+          headers: {
+            "x-rapidapi-key":
+              "1d5f3f84d3msh2641af851d54b69p10d407jsn0eed17ff5dd1",
+            "x-rapidapi-host": "ocr-extract-text.p.rapidapi.com",
+          },
+        };
+
+        try {
+          fetch(url, options)
+            .then((response) => response.json())
+            .then((result) => (text.innerText = result.text));
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    </script>
+  </body>
+</html>
